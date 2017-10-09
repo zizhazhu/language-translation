@@ -218,7 +218,7 @@ tests.test_process_encoding_input(process_decoder_input)
 #  * Construct a [stacked](https://github.com/tensorflow/tensorflow/blob/6947f65a374ebf29e74bb71e36fd82760056d82c/tensorflow/docs_src/tutorials/recurrent.md#stacking-multiple-lstms) [`tf.contrib.rnn.LSTMCell`](https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/LSTMCell) wrapped in a [`tf.contrib.rnn.DropoutWrapper`](https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/DropoutWrapper)
 #  * Pass cell and embedded input to [`tf.nn.dynamic_rnn()`](https://www.tensorflow.org/api_docs/python/tf/nn/dynamic_rnn)
 
-# In[10]:
+# In[9]:
 
 
 from imp import reload
@@ -260,7 +260,7 @@ tests.test_encoding_layer(encoding_layer)
 # * Create a [`tf.contrib.seq2seq.BasicDecoder`](https://www.tensorflow.org/api_docs/python/tf/contrib/seq2seq/BasicDecoder)
 # * Obtain the decoder outputs from [`tf.contrib.seq2seq.dynamic_decode`](https://www.tensorflow.org/api_docs/python/tf/contrib/seq2seq/dynamic_decode)
 
-# In[18]:
+# In[10]:
 
 
 
@@ -298,7 +298,7 @@ tests.test_decoding_layer_train(decoding_layer_train)
 # * Create a [`tf.contrib.seq2seq.BasicDecoder`](https://www.tensorflow.org/api_docs/python/tf/contrib/seq2seq/BasicDecoder)
 # * Obtain the decoder outputs from [`tf.contrib.seq2seq.dynamic_decode`](https://www.tensorflow.org/api_docs/python/tf/contrib/seq2seq/dynamic_decode)
 
-# In[19]:
+# In[11]:
 
 
 def decoding_layer_infer(encoder_state, dec_cell, dec_embeddings, start_of_sequence_id,
@@ -345,7 +345,7 @@ tests.test_decoding_layer_infer(decoding_layer_infer)
 # 
 # Note: You'll need to use [tf.variable_scope](https://www.tensorflow.org/api_docs/python/tf/variable_scope) to share variables between training and inference.
 
-# In[24]:
+# In[12]:
 
 
 def decoding_layer(dec_input, encoder_state,
@@ -403,7 +403,7 @@ tests.test_decoding_layer(decoding_layer)
 # - Process target data using your `process_decoder_input(target_data, target_vocab_to_int, batch_size)` function.
 # - Decode the encoded input using your `decoding_layer(dec_input, enc_state, target_sequence_length, max_target_sentence_length, rnn_size, num_layers, target_vocab_to_int, target_vocab_size, batch_size, keep_prob, dec_embedding_size)` function.
 
-# In[29]:
+# In[13]:
 
 
 def seq2seq_model(input_data, target_data, keep_prob, batch_size,
@@ -459,31 +459,31 @@ tests.test_seq2seq_model(seq2seq_model)
 # - Set `keep_probability` to the Dropout keep probability
 # - Set `display_step` to state how many steps between each debug output statement
 
-# In[30]:
+# In[14]:
 
 
 # Number of Epochs
-epochs = 2
+epochs = 7
 # Batch Size
-batch_size = 64
+batch_size = 128
 # RNN Size
 rnn_size = 256
 # Number of Layers
-num_layers = 1
+num_layers = 2
 # Embedding Size
-encoding_embedding_size = 200
-decoding_embedding_size = 200
+encoding_embedding_size = 300
+decoding_embedding_size = 300
 # Learning Rate
 learning_rate = 0.001
 # Dropout Keep Probability
-keep_probability = 0.5
-display_step = 20
+keep_probability = 0.7
+display_step = 50
 
 
 # ### Build the Graph
 # Build the graph using the neural network you implemented.
 
-# In[31]:
+# In[15]:
 
 
 """
@@ -539,7 +539,7 @@ with train_graph.as_default():
 
 # Batch and pad the source and target sequences
 
-# In[32]:
+# In[16]:
 
 
 """
@@ -579,7 +579,7 @@ def get_batches(sources, targets, batch_size, source_pad_int, target_pad_int):
 # ### Train
 # Train the neural network on the preprocessed data. If you have a hard time getting a good loss, check the forms to see if anyone is having the same problem.
 
-# In[33]:
+# In[17]:
 
 
 """
@@ -666,7 +666,7 @@ with tf.Session(graph=train_graph) as sess:
 # ### Save Parameters
 # Save the `batch_size` and `save_path` parameters for inference.
 
-# In[34]:
+# In[18]:
 
 
 """
@@ -678,7 +678,7 @@ helper.save_params(save_path)
 
 # # Checkpoint
 
-# In[35]:
+# In[19]:
 
 
 """
@@ -700,7 +700,7 @@ load_path = helper.load_params()
 # - Convert words into ids using `vocab_to_int`
 #  - Convert words not in the vocabulary, to the `<UNK>` word id.
 
-# In[37]:
+# In[20]:
 
 
 def sentence_to_seq(sentence, vocab_to_int):
@@ -730,10 +730,10 @@ tests.test_sentence_to_seq(sentence_to_seq)
 # ## Translate
 # This will translate `translate_sentence` from English to French.
 
-# In[41]:
+# In[25]:
 
 
-translate_sentence = 'How are you ?'
+translate_sentence = 'that cat was my most loved animal .'
 
 
 """
